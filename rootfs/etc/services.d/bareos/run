@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e # Exit if any command errors
+
+# Run setup if eixists
+[ -x /etc/services.d/bareos-dir/setup ] && /etc/services.d/bareos-dir/setup
+
+# Copy default config if not exists
+[ ! -e /etc/bareos/bareos-dir.conf ] && cp /temp/bareos-dir.conf /etc/bareos/bareos-dir.conf 
+[ ! -e /etc/bareos/bconsole.conf ] && cp /temp/bconsole.conf /etc/bareos/bconsole.conf
+[ ! -e /etc/bareos/dir.conf.d ] && cp -r /temp/dir.conf.d /etc/bareos/dir.conf.d
+[ ! -e /etc/bareos/bootstraps ] && mkdir -p /etc/bareos/bootstraps
+
+# Database initialization
+/etc/services.d/bareos/init_db.sh
+
+# Config test
+/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf
+
+# (tail -F /var/log/bareos/bareos.log 2>/dev/null 1>/dev/stdout)&
+
+exec /usr/sbin/bareos-dir -f -c /etc/bareos/bareos-dir.conf

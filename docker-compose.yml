@@ -1,0 +1,38 @@
+# Postgres Database (Catalog)
+postgres:
+  image: sameersbn/postgresql:9.4-19
+  environment:
+    - "DB_USER=bareos"
+    - "DB_PASS=pgsql"
+  volumes:
+    - "./_data/pstgres:/var/lib/postgresql"
+
+# Bareos Director
+bareos-dir:
+  image: shoifele/bareos-dir
+  environment:
+    - "DB_PASS=pgsql"
+  ports:
+    - "9101:9101"
+  volumes:
+    - "./_data/etc:/etc/bareos"
+  links:
+    - "postgres:postgres"
+    - "bareos-sd:bareos-sd"
+
+# Bareos Storage Daemon
+bareos-sd:
+  image: shoifele/bareos-sd
+  ports:
+    - "9103:9103"
+  volumes:
+    - "./_data/etc:/etc/bareos"
+    - "./_data/storage:/storage"
+
+# Bareos WebUI
+bareos-ui:
+  image: shoifele/bareos-ui
+  links:
+    - "bareos-dir:bareos-dir"
+  ports:
+    - "80:80"
