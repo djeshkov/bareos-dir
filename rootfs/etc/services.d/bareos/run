@@ -6,9 +6,9 @@ set -e # Exit if any command errors
 [ -x /etc/services.d/bareos-dir/setup ] && /etc/services.d/bareos-dir/setup
 
 # Copy default config if not exists
-[ ! -e /etc/bareos/bareos-dir.conf ] && cp /temp/bareos-dir.conf /etc/bareos/bareos-dir.conf 
-[ ! -e /etc/bareos/bconsole.conf ] && cp /temp/bconsole.conf /etc/bareos/bconsole.conf
-[ ! -e /etc/bareos/dir.conf.d ] && cp -r /temp/dir.conf.d /etc/bareos/dir.conf.d
+[ ! -e /etc/bareos/bareos-dir.conf ] && cp /temp/conf/bareos-dir.conf /etc/bareos/bareos-dir.conf 
+[ ! -e /etc/bareos/bconsole.conf ] && cp /temp/conf/bconsole.conf /etc/bareos/bconsole.conf
+[ ! -e /etc/bareos/dir.conf.d ] && cp -r /temp/conf/dir.conf.d /etc/bareos/dir.conf.d
 [ ! -e /etc/bareos/bootstraps ] && mkdir -p /etc/bareos/bootstraps
 
 # Database initialization

@@ -27,3 +27,24 @@
 * Volume: `/etc/bareos`
 
 
+```bash
+
+# Run
+docker run \
+    --rm \
+    --name bareos-dir \
+    --link postgres \
+    --link bareos-sd \
+    --env DB_PASS=bareos \
+    --volume $PWD/bareos-conf:/etc/bareos \
+    shoifele/bareos-dir
+
+# Config check
+docker exec bareos-dir bareos-dir -t -c /etc/bareos/bareos-dir.conf
+
+# bconsole
+docker exec -ti bareos-dir bconsole
+
+# Config reload
+docker exec bareos-dir /bin/bash -c 'echo reload | bconsole'
+```
