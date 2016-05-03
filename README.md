@@ -1,5 +1,7 @@
 # Bareos Director
 
+[Open Source Data Protection](https://www.bareos.org)
+
 * Based on CentOS7
 * **Automatic Database initialization and updates**
 * Splitted Config Defaults
@@ -8,10 +10,10 @@
 ### Bareos Components
 
 * **Director**: Supervises all the backup, restore, verify and archive operations
-* **StorageDeamon**: Service to perform the storage and recovery to the physical backup media or volumes.
-* **WebUI**: Communicate with the Director using a web browser
+* [**StorageDeamon**](https://github.com/shoifele/bareos-sd): Service to perform the storage and recovery to the physical backup media or volumes.
+* [**WebUI**](https://github.com/shoifele/bareos-ui): Communicate with the Director using a web browser
 * **bconsol**: Communicate with the Director using a terminal
-* **Catalog**: A (postgres) Databases holding the Directors data
+* [**Catalog**](https://github.com/sameersbn/docker-postgresql): A (postgres) Databases holding the Directors data
 
 
 ### Bareos Director
@@ -28,12 +30,20 @@
 
 
 ```bash
+# Postgres
+docker run \
+  --rm \
+  --name bareos-postgres \
+  -v /opt/bareos/postgres:/var/lib/postgresql \
+  -e DB_USER=bareos \
+  -e DB_PASS=bareos \
+  sameersbn/postgresql:9.4-19
 
-# Run
+# Bareos Director
 docker run \
     --rm \
     --name bareos-dir \
-    --link postgres \
+    --link bareos-postgres:postgres \
     --link bareos-sd \
     --env DB_PASS=bareos \
     --volume $PWD/bareos-conf:/etc/bareos \
@@ -47,4 +57,39 @@ docker exec -ti bareos-dir bconsole
 
 # Config reload
 docker exec bareos-dir /bin/bash -c 'echo reload | bconsole'
+```
+
+#### TLS Transport Encryption
+
+see [Bareos Manual](http://doc.bareos.org/master/html/bareos-manual-main-reference.html#x1-33500027)
+
+```bash
+## Generate Diffie-Hellman Parameter File
+openssl dhparam -out dh1024.pem -5 1024
+
+## Certified Authority
+# Generate CA Key
+genrsa -out ca.key 2048
+# Generate CA Cert
+req -x509 -new -nodes -extensions v3_ca -key ca.key -days 7300 -out ca.crt -sha512
+
+## Generate a signed Cert
+genrsa -out bareos-dir.key 4096
+req -new -key bareos-dir.key -out bareos-dir.csr -sha512
+x509 -req -in bareos-dir.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out bareos-dir.crt -days 7300 -sha512
+```
+
+#### Data Encryption
+
+see [Bareos Manual](http://doc.bareos.org/master/html/bareos-manual-main-reference.html#x1-33900028)
+
+```bash
+## Generate a Master Key Pair
+openssl genrsa -out master.key 2048
+openssl req -new -key master.key -x509 -out master.crt
+
+## Generate a File Daemon Key Pair for each FD
+openssl genrsa -out storage01.key 2048
+openssl req -new -key storage01.key -x509 -out storage01.crt
+cat storage01.key storage01.crt > storage01.pem
 ```
