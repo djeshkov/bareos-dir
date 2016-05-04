@@ -69,14 +69,14 @@ openssl dhparam -out dh1024.pem -5 1024
 
 ## Certified Authority
 # Generate CA Key
-genrsa -out ca.key 2048
+openssl genrsa -out ca.key 4096
 # Generate CA Cert
-req -x509 -new -nodes -extensions v3_ca -key ca.key -days 7300 -out ca.crt -sha512
+openssl req -x509 -new -nodes -extensions v3_ca -key ca.key -days 7300 -out ca.crt -sha512
 
 ## Generate a signed Cert
-genrsa -out bareos-dir.key 4096
-req -new -key bareos-dir.key -out bareos-dir.csr -sha512
-x509 -req -in bareos-dir.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out bareos-dir.crt -days 7300 -sha512
+openssl genrsa -out bareos-dir.key 4096
+openssl req -new -key bareos-dir.key -out bareos-dir.csr -sha512
+openssl x509 -req -in bareos-dir.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out bareos-dir.crt -days 7300 -sha512
 ```
 
 #### Data Encryption
