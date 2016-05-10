@@ -73,10 +73,15 @@ openssl genrsa -out ca.key 4096
 # Generate CA Cert
 openssl req -x509 -new -nodes -extensions v3_ca -key ca.key -days 7300 -out ca.crt -sha512
 
-## Generate a signed Cert
-openssl genrsa -out bareos-dir.key 4096
-openssl req -new -key bareos-dir.key -out bareos-dir.csr -sha512
-openssl x509 -req -in bareos-dir.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out bareos-dir.crt -days 7300 -sha512
+## Generate the Server Cert
+openssl genrsa -out bareos.key 4096
+openssl req -new -key bareos.key -out bareos.csr -sha512
+openssl x509 -req -in bareos.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out bareos.crt -days 7300 -sha512
+
+### Generate a Cert for reach Client
+openssl genrsa -out client1.key 4096
+openssl req -new -key client1.key -out client1.csr -sha512
+openssl x509 -req -in client1.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client1.crt -days 7300 -sha512
 ```
 
 #### Data Encryption
