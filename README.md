@@ -4,6 +4,7 @@
 
 * Based on CentOS7
 * **Automatic Database initialization and updates**
+* Out of the box backup system
 * Splitted Config Defaults
 * [docker-compose file](docker-compose.yml)
 
@@ -16,7 +17,11 @@
 * **bconsol**: Communicate with the Director using a terminal
 * [**Catalog**](https://github.com/sameersbn/docker-postgresql): A (postgres) Databases holding the Directors data
 
-
+### Try it out 
+'''bash
+docker-compose up
+'''
+### to get ready to use backup system
 ### Bareos Director
 
 * Image: `shoifele/bareos-dir`
