@@ -53,7 +53,7 @@ docker run \
     --link bareos-sd \
     --env DB_PASS=bareos \
     --volume $PWD/bareos-conf:/etc/bareos \
-    shoifele/bareos-dir
+    djeshkov/bareos-dir
 
 # Config check
 docker exec bareos-dir bareos-dir -t -c /etc/bareos/bareos-dir.conf
