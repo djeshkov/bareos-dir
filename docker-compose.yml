@@ -6,7 +6,7 @@ postgres:
     - "DB_USER=bareos"
     - "DB_PASS=bareos"
   volumes:
-    - "./_data/pstgres:/var/lib/postgresql"
+    - "/data/pstgres:/var/lib/postgresql"
 
 # Bareos Storage Daemon
 bareos-sd:
@@ -15,17 +15,30 @@ bareos-sd:
   ports:
     - "9103:9103"
   volumes:
-    - "./_data/etc:/etc/bareos"
-    - "./_data/storage:/storage"
+    - "/data/etc:/etc/bareos"
+    - "/data/storage:/storage"
+
+bareos-fd:
+  container_name: bareos-fd
+  image: djeshkov/bareos-fd
+  ports:
+    - "9102:9102"
+
+  volumes:
+    - "/data/etc:/etc/bareos"
+    - /:/mnt:ro
+  links:
+    - bareos-dir
+
 
 # Bareos Director
 bareos-dir:
   container_name: bareos-dir
-  image: shoifele/bareos-dir
+  image: djeshkov/bareos-dir
   environment:
     - "DB_PASS=bareos"
   volumes:
-    - "./_data/etc:/etc/bareos"
+    - "/data/etc:/etc/bareos"
   links:
     - postgres
     - bareos-sd
@@ -37,4 +50,4 @@ bareos-ui:
   links:
     - bareos-dir
   ports:
-    - "80:80"
+    - "8000:80"

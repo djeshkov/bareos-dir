@@ -11,6 +11,7 @@
 
 * **Director**: Supervises all the backup, restore, verify and archive operations
 * [**StorageDeamon**](https://github.com/shoifele/bareos-sd): Service to perform the storage and recovery to the physical backup media or volumes.
+* [**FileDeamon**](https://github.com/djeshkov/bareos-fd): Service to perform backups.
 * [**WebUI**](https://github.com/shoifele/bareos-ui): Communicate with the Director using a web browser
 * **bconsol**: Communicate with the Director using a terminal
 * [**Catalog**](https://github.com/sameersbn/docker-postgresql): A (postgres) Databases holding the Directors data
