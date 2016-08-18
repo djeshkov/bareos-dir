@@ -24,7 +24,7 @@ docker-compose up
 ### to get ready to use backup system
 ### Bareos Director
 
-* Image: `shoifele/bareos-dir`
+* Image: `djeshkov/bareos-dir`
 * Needs: `postgresql`
 * Port: `9101`
 * ENV-Vars: (For DB auto init/update)
