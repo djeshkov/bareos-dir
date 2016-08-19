@@ -27,7 +27,7 @@ docker-compose up
 
 ```
 
-### to get ready to use backup system
+
 ### Bareos Director
 
 * Image: `djeshkov/bareos-dir`
