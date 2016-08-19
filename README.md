@@ -17,10 +17,16 @@
 * **bconsol**: Communicate with the Director using a terminal
 * [**Catalog**](https://github.com/sameersbn/docker-postgresql): A (postgres) Databases holding the Directors data
 
-### Try it out 
-'''
+### Docker composer
+
+```
+
+curl -L https://raw.githubusercontent.com/djeshkov/bareos-fd/master/docker-compose.yaml > /tmp/docker-compose.yaml
+cd /tmp
 docker-compose up
-'''
+
+```
+
 ### to get ready to use backup system
 ### Bareos Director
 
