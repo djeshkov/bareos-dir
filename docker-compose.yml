@@ -27,10 +27,11 @@ bareos-fd:
 
   volumes:
     - "/data/etc:/etc/bareos"
-    # In order to backup postgres database, we create file /data/etc/.pgpass, contains - *:*:*:postgres:bareos and mount it to /root/.pgpass inside FileDaemon's container.
-    - /data/etc/.pgpass:/root/.pgpass
-    - /:/mnt:ro
-    - /var/backups:/mnt/var/backups
+    #required for backups of postgresql databases
+    - "/data/etc/.pgpass:/root/.pgpass"
+    - "/data/scripts:/scripts"
+    - "/:/mnt:ro"
+    - "/var/backups:/mnt/var/backups"
   links:
     - bareos-dir
     - postgres
