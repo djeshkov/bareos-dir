@@ -70,6 +70,9 @@ docker exec -ti bareos-dir bconsole
 # Config reload
 docker exec bareos-dir /bin/bash -c 'echo reload | bconsole'
 ```
+#### Security
+
+Don't forget to change passwords in bareos-fd.conf, bareos-sd.conf, bareos-dir.conf and dir.conf.d/Clients/* accordingly
 
 #### TLS Transport Encryption
 
