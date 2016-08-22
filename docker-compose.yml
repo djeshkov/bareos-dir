@@ -4,6 +4,7 @@ postgres:
   image: sameersbn/postgresql:9.4-19
   environment:
     - "DB_USER=bareos"
+    - "PG_PASSWORD=bareos"
     - "DB_PASS=bareos"
   volumes:
     - "/data/pstgres:/var/lib/postgresql"
@@ -11,7 +12,7 @@ postgres:
 # Bareos Storage Daemon
 bareos-sd:
   container_name: bareos-sd
-  image: shoifele/bareos-sd
+  image: djeshkov/bareos-sd
   ports:
     - "9103:9103"
   volumes:
@@ -26,9 +27,13 @@ bareos-fd:
 
   volumes:
     - "/data/etc:/etc/bareos"
+    # In order to backup postgres database, we create file /data/etc/.pgpass, contains - *:*:*:postgres:bareos and mount it to /root/.pgpass inside FileDaemon's container.
+    - /data/etc/.pgpass:/root/.pgpass
     - /:/mnt:ro
+    - /var/backups:/mnt/var/backups
   links:
     - bareos-dir
+    - postgres
 
 
 # Bareos Director
