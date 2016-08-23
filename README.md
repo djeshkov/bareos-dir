@@ -70,6 +70,13 @@ docker exec -ti bareos-dir bconsole
 # Config reload
 docker exec bareos-dir /bin/bash -c 'echo reload | bconsole'
 ```
+
+# Monitoring 
+
+docker exec -ti bareos-dir  /scripts/check_bareo/check_bareos.py -u bareos -p bareos -H postgres -d p job -js -w 50 -c 100
+
+More examples are here - https://github.com/widhalmt/check_bareos
+
 #### Security
 
 Don't forget to change passwords in bareos-fd.conf, bareos-sd.conf, bareos-dir.conf and dir.conf.d/Clients/* accordingly

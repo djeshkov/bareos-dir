@@ -24,9 +24,13 @@ RUN curl -Ls http://download.bareos.org/bareos/release/latest/CentOS_7/bareos.re
     lzo \
     postgresql-libs \
     postgresql \
+    MySQL-python \
+    python-psycopg2 \
   && yum clean all
 
 ADD rootfs /
+#Icinga plugin for monitoring 
+RUN git clone https://github.com/widhalmt/check_bareos.git /scripts/check_bareo
 
 EXPOSE 9101
 VOLUME /etc/bareos
